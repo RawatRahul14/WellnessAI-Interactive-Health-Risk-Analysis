@@ -3,8 +3,8 @@
 ## Contents:
 - [Objective](#objective)
 - [Installation](#installation)
-    - [Cloning the Repository](#1-clone-this-repositoryClone-this-repository)
-    - [Installing the Packages](#2-installing-the-packagesInstalling-the-Packages)
+    - Cloning the Repository
+    - Installing the Packages
 
 ### Objective
 

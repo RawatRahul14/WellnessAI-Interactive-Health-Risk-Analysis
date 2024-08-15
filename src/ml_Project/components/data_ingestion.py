@@ -2,12 +2,17 @@ import os
 from ml_Project import logger
 from urllib import request
 import zipfile
+from ml_Project.utils.common import create_directories
 
 class DataIngestion:
-    def __init__(self, file_path, url, unzip_filepath):
+    def __init__(self, data_dir, file_path, url, unzip_filepath):
+        self.data_dir = data_dir
         self.file_path = file_path
         self.url = url
         self.unzip_filepath = unzip_filepath
+
+    def create_dir(self):
+        create_directories([self.data_dir])
 
     def download_file(self):
         if not os.path.exists(self.file_path):
