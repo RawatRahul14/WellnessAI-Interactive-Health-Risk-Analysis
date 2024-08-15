@@ -81,8 +81,8 @@ st.title("Diabetes Prediction UI")
 st.header("Enter Your Health Information")
 
 # Input fields corresponding to the dataset columns
-high_bp = st.selectbox("High Blood Pressure (HighBP)", [0, 1])
-high_chol = st.selectbox("High Cholesterol (HighChol)", [0, 1])
+high_bp = st.number_input("High Blood Pressure (HighBP)", min_value=0.0, max_value=1.0, value=0.5)
+high_chol = st.number_input("High Cholesterol (HighChol)", min_value=0.0, max_value=1.0, value=0.5)
 chol_check = st.selectbox("Cholesterol Check (CholCheck)", [0, 1])
 height = st.number_input("Height (in cms)", min_value=10.0, max_value=200.0, value=100.0)
 weight = st.number_input("Weight (in kgs)", min_value=0.0, max_value=120.0, value=30.0)

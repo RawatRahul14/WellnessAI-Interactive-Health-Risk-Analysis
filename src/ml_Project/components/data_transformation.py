@@ -28,6 +28,11 @@ class DataTransformation:
         X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
         logger.info("Resampled the data to balance the Labels.")
 
+        cols = ['Sex', 'DiffWalk', 'AnyHealthcare', 'Veggies', 
+                'Fruits', 'HeartDiseaseorAttack', 'Stroke']
+        for col in cols:
+            X_resampled[col] = (X_resampled[col] >= 0.5).astype(float)
+
         merged_df = pd.concat([X_resampled, pd.DataFrame(y_resampled)], axis = 1)
 
         train, test = train_test_split(merged_df, test_size = 0.2, random_state = 42)
