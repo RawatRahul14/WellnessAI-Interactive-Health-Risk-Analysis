@@ -1,9 +1,11 @@
 pandas
 numpy
-numpy
 scikit-learn
 matplotlib
 tensorflow
 seaborn
 ensure
+imbalanced-learn
+collections
+urllib
 -e .
