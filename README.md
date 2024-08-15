@@ -14,7 +14,7 @@ The objective of this project is to develop and evaluate machine learning models
 
 ##### 1. Clone this repository.
 ```bash
-cd https://github.com/RawatRahul14/WellnessAI-Interactive-Health-Risk-Analysis.git
+git clone https://github.com/RawatRahul14/WellnessAI-Interactive-Health-Risk-Analysis.git
 ```
 
 ##### 2. Installing the Packages
