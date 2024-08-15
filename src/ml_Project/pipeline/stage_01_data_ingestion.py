@@ -5,7 +5,7 @@ STAGE_NAME = "Data Ingestion Stage"
 
 data_dir = "Dataset/Data_Ingestion"
 file_path = "Dataset/Data_Ingestion/data.zip"
-url = "https://github.com/RawatRahul14/diabetes_dataset/raw/main/diabetes_dataset.zip"
+url = "https://github.com/RawatRahul14/diabetes_dataset/raw/main/diabetes_data.zip"
 unzip_filepath = "Dataset/Data_Ingestion"
 
 class DataIngestionPipeline:
