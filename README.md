@@ -1,10 +1,10 @@
 # WellnessAI-Interactive-Health-Risk-Analysis
 
 ## Contents:
-- [Objective](objective)
-- [Installation](installation)
-    - [Cloning the Repository](Clone-this-repository)
-    - [Installing the Packages](Installing-the-Packages)
+- [Objective](#objective)
+- [Installation](#installation)
+    - [Cloning the Repository](#1-clone-this-repositoryClone-this-repository)
+    - [Installing the Packages](#2-installing-the-packagesInstalling-the-Packages)
 
 ### Objective
 
@@ -12,12 +12,12 @@ The objective of this project is to develop and evaluate machine learning models
 
 ### Installation
 
-1. Clone this repository.
+##### 1. Clone this repository.
 ```bash
 cd https://github.com/RawatRahul14/WellnessAI-Interactive-Health-Risk-Analysis.git
 ```
 
-2. Installing the Packages
+##### 2. Installing the Packages
 ```bash
 pip install -r requirements.txt
 ```
