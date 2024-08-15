@@ -5,6 +5,7 @@
 - [Installation](#installation)
     - Cloning the Repository
     - Installing the Packages
+    - Running the file
 
 ### Objective
 
@@ -20,4 +21,10 @@ git clone https://github.com/RawatRahul14/WellnessAI-Interactive-Health-Risk-Ana
 ##### 2. Installing the Packages
 ```bash
 pip install -r requirements.txt
+```
+
+##### 3. Running the File
+
+```bash
+python main.py
 ```
