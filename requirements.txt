@@ -7,6 +7,10 @@ seaborn
 ensure
 imbalanced-learn
 collections
+sys
 urllib
+os
+zipfile
+logging
 streamlit
 -e .
