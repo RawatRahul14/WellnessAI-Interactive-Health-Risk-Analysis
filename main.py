@@ -3,6 +3,7 @@ from ml_Project.pipeline.stage_01_data_ingestion import DataIngestionPipeline
 from ml_Project.pipeline.stage_02_data_transformation import DataTransformationPipeline
 from ml_Project.pipeline.stage_04_mlp_model import MLPModelPipeline
 from ml_Project.pipeline.stage_05_cnn_model import CNNModelPipeline
+from ml_Project.pipeline.stage_06_rnn_model import RNNModelPipeline
 
 STAGE_NAME = "Data ingestion stage"
 try:
@@ -52,3 +53,14 @@ except Exception as e:
     raise e
 
 logger.info("-"*40)
+
+STAGE_NAME = "RNN Model Training"
+
+try:
+    logger.info(f">>>>>>>> Stage: {STAGE_NAME} started <<<<<<<<<")
+    obj = RNNModelPipeline()
+    obj.main()
+    logger.info(f">>>>>>>> Stage: {STAGE_NAME} completed <<<<<<<<<")
+except Exception as e:
+    logger.exception(e)
+    raise e

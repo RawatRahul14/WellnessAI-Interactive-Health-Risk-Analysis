@@ -1,4 +1,4 @@
-from tensorflow.keras.layers import Input, Dense, Concatenate, Conv2D, Flatten
+from tensorflow.keras.layers import Input, Dense, Concatenate, Conv2D, Flatten, LSTM
 from tensorflow.keras.models import Model
 import tensorflow as tf
 
@@ -54,6 +54,24 @@ def CNN_model(input_shape):
 
     return model
 
+def RNN_model(input_shape):
+    # Input layer
+    inputs = Input(shape=input_shape, name = "input")
+
+    # RNN Layer
+    x = LSTM(128, return_sequences=True, name = "lstm_1")(inputs)
+    x = LSTM(64, name = "lstm_2")(x)
+
+    # Fully connected layers
+    x = Dense(128, activation="relu", name = "dense_1")(x)
+    outputs = Dense(3, activation="softmax", name = "output")(x)
+
+    # Build model
+    model = Model(inputs=inputs, outputs=outputs)
+    model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
+
+    return model
+
 import streamlit as st
 import numpy as np
 import tensorflow as tf
@@ -64,6 +82,9 @@ mlp_model = MLP_model(input_shape)
 
 input_shape_cnn = (21, 1, 1)
 cnn_model = CNN_model(input_shape_cnn)
+
+input_shape_rnn = (21, 1)
+rnn_model = RNN_model(input_shape_rnn)
 
 # Load pre-trained model weights
 try:
@@ -101,13 +122,13 @@ ment_hlth = st.slider("Mental Health (MentHlth)", min_value=0, max_value=30, val
 phys_hlth = st.slider("Physical Health (PhysHlth)", min_value=0, max_value=30, value=5)
 diff_walk = st.selectbox("Difficulty Walking (DiffWalk)", [0, 1])
 sex = st.selectbox("Sex (0=Female, 1=Male)", [0, 1])
-age = st.slider("Age Category (Age)", min_value=1, max_value=13, value=7)  # Assuming age categories are 1-13
+age = st.slider("Age Category (Age)", min_value=1, max_value=100, value=18)  # Assuming age categories are 1-13
 education = st.slider("Education Level (Education)", min_value=1, max_value=6, value=4)
 income = st.slider("Income Level (Income)", min_value=1, max_value=8, value=4)
 
 # Model Selection
 st.header("Select a Deep Learning Model")
-model_choice = st.radio("Choose a model", ("MLP", "CNN"))
+model_choice = st.radio("Choose a model", ("MLP", "CNN", "RNN"))
 
 # Display the selected model and inputs
 st.subheader("Selected Model:")
@@ -128,7 +149,7 @@ if st.button("Run Model"):
     # Prepare the input data for prediction
     input_data = np.array([[high_bp, high_chol, chol_check, bmi, smoker, stroke, heart_disease, phys_activity,
                             fruits, veggies, hvy_alcohol, any_healthcare, no_doc_cost, gen_hlth, ment_hlth,
-                            phys_hlth, diff_walk, sex, age, education, income]])
+                            phys_hlth, diff_walk, sex, age//5, education, income]])
     
     try:
         # Make a prediction using the model
@@ -137,6 +158,9 @@ if st.button("Run Model"):
         elif model_choice == "CNN":
             input_data = input_data.reshape(-1, input_data.shape[1], 1, 1)
             prediction = cnn_model.predict(input_data)
+        elif model_choice == "RNN":
+            input_data = input_data.reshape(-1, input_data.shape[1], 1)
+            prediction = rnn_model.predict(input_data)
         predicted_class = np.argmax(prediction, axis=1)[0]
         labels = ["No Diabetes", "Prediabetes", "Diabetes"]  # Adjust as per your classes
         prediction_label = labels[predicted_class]
