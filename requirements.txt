@@ -6,7 +6,6 @@ tensorflow
 seaborn
 ensure
 imbalanced-learn
-collections
 sys
 urllib
 os
