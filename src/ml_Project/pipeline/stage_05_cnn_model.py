@@ -6,7 +6,7 @@ STAGE_NAME = "CNN Model Training"
 train_data_path = "Dataset/Data_transformation/train.csv"
 test_data_path = "Dataset/Data_transformation/test.csv"
 target_col = "Diabetes_012"
-dir_path = "Dataset/Model_selection"
+dir_path = "Model_weights/Model_selection"
 
 class CNNModelPipeline:
     def __init__(self):

@@ -91,5 +91,5 @@ class ModelTrainer:
         logger.info(f"Model Accuracy: {accuracy:.4f}")
 
         # Save model weights
-        model.save_weights("Dataset/Model_selection/model_mlp.h5")
+        model.save_weights("Model_weights/Model_selection/model_mlp.h5")
         logger.info("Model saved.")
