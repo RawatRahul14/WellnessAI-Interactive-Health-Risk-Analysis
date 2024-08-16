@@ -77,13 +77,13 @@ import numpy as np
 import tensorflow as tf
 
 # Define the model architecture
-input_shape = (21,)  # Adjust input shape as per your model
+input_shape = (19,)  # Adjust input shape as per your model
 mlp_model = MLP_model(input_shape)
 
-input_shape_cnn = (21, 1, 1)
+input_shape_cnn = (19, 1, 1)
 cnn_model = CNN_model(input_shape_cnn)
 
-input_shape_rnn = (21, 1)
+input_shape_rnn = (19, 1)
 rnn_model = RNN_model(input_shape_rnn)
 
 # Load pre-trained model weights

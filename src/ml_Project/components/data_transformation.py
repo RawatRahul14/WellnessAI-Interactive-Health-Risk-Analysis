@@ -18,7 +18,14 @@ class DataTransformation:
         data = pd.read_csv(self.data_path)
 
         data = data.drop_duplicates()
+
+        col_drops = ["Income", "Education", "AnyHealthcare"]
+
         logger.info("Removed the duplicated data.")
+
+        data.drop(columns = col_drops, axis = 1, inplace = True)
+
+        logger.info("Removed the unnecessary columns.")
 
         X = data.drop("Diabetes_012", axis = 1)
         y = data["Diabetes_012"]
