@@ -103,44 +103,37 @@ st.title("Diabetes Prediction UI")
 st.header("Enter Your Health Information")
 
 # Input fields corresponding to the dataset columns
-high_bp = st.number_input("High Blood Pressure (HighBP)", min_value=0.0, max_value=1.0, value=0.5)
-high_chol = st.number_input("High Cholesterol (HighChol)", min_value=0.0, max_value=1.0, value=0.5)
-chol_check = st.selectbox("Cholesterol Check (CholCheck)", [0, 1])
-height = st.number_input("Height (in cms)", min_value=10.0, max_value=200.0, value=100.0)
-weight = st.number_input("Weight (in kgs)", min_value=0.0, max_value=120.0, value=30.0)
+high_bp = st.number_input("Enter your level of high blood pressure (0 = None, 1 = Very High)", min_value=0.0, max_value=1.0, value=0.5)
+high_chol = st.number_input("Enter your level of high cholesterol (0 = None, 1 = Very High)", min_value=0.0, max_value=1.0, value=0.5)
+chol_check = st.selectbox("Have you undergone a cholesterol check? (0 = No, 1 = Yes)", [0, 1])
+height = st.number_input("Enter your height (in cm)", min_value=10.0, max_value=200.0, value=100.0)
+weight = st.number_input("Enter your weight (in kg)", min_value=0.0, max_value=120.0, value=30.0)
 bmi = (weight/height ** 2) * 10000
-smoker = st.selectbox("Smoker", [0, 1])
-stroke = st.selectbox("Stroke", [0, 1])
-heart_disease = st.selectbox("Heart Disease or Attack (HeartDiseaseorAttack)", [0, 1])
-phys_activity = st.selectbox("Physical Activity (PhysActivity)", [0, 1])
-fruits = st.selectbox("Fruits", [0, 1])
-veggies = st.selectbox("Vegetables (Veggies)", [0, 1])
-hvy_alcohol = st.selectbox("Heavy Alcohol Consumption (HvyAlcoholConsump)", [0, 1])
-no_doc_cost = st.selectbox("No Doctor Because of Cost (NoDocbcCost)", [0, 1])
-gen_hlth = st.slider("General Health (GenHlth)", min_value=1, max_value=5, value=3)
-ment_hlth = st.slider("Mental Health (MentHlth)", min_value=0, max_value=30, value=5)
-phys_hlth = st.slider("Physical Health (PhysHlth)", min_value=0, max_value=30, value=5)
-diff_walk = st.selectbox("Difficulty Walking (DiffWalk)", [0, 1])
-sex = st.selectbox("Sex (0=Female, 1=Male)", [0, 1])
-age = st.slider("Age Category (Age)", min_value=1, max_value=100, value=18)
+smoker = st.selectbox("Enter your smoking frequency (0 = Never, 1 = Heavy Smoker", [0, 1])
+stroke = st.selectbox("Have you ever get stroke? (0 = None, 1 = Very High)", [0, 1])
+heart_disease = st.selectbox("Have you ever get any heart disease or attack (0 = None, 1 = Very High))", [0, 1])
+phys_activity = st.selectbox("Enter your level of physical activity (0 = None, 1 = Very Active)", [0, 1])
+fruits = st.selectbox("Enter your frequency of fruit consumption (0 = Never, 1 = Daily)", [0, 1])
+veggies = st.selectbox("Enter your frequency of vegetable consumption (0 = Never, 1 = Daily)", [0, 1])
+hvy_alcohol = st.selectbox("Enter your level of heavy alcohol consumption (0 = None, 1 = Very High)", [0, 1])
+no_doc_cost = st.selectbox("Enter how often you avoid seeing a doctor due to cost (0 = Never, 1 = Always)", [0, 1])
+gen_hlth = st.slider("How would you rate your general health? (1 = Poor, 10 = Excellent)", min_value=1, max_value=10, value=5)
+gen_hlth = gen_hlth // 2
+ment_hlth = st.slider("How would you rate your mental health? (1 = Poor, 10 = Excellent)", min_value=1, max_value=10, value=5)
+ment_hlth = ment_hlth * 3
+phys_hlth = st.slider("How would you rate your physical health? (1 = Poor, 10 = Excellent)", min_value=1, max_value=10, value=5)
+phys_hlth = phys_hlth * 3
+diff_walk = st.selectbox("Enter your difficulty walking (0 = None, 1 = Severe)", [0, 1])
+sex = st.selectbox("Select your gender", ["Female", "Male"])
+if sex == "Female":
+    sex = 0
+else:
+    sex = 1
+age = st.slider("Please specify your age", min_value=1, max_value=100, value=18)
 
 # Model Selection
 st.header("Select a Deep Learning Model")
 model_choice = st.radio("Choose a model", ("MLP", "CNN", "RNN"))
-
-# Display the selected model and inputs
-st.subheader("Selected Model:")
-st.write(f"Model: {model_choice}")
-
-st.subheader("Your Inputs:")
-st.write({
-    "HighBP": high_bp, "HighChol": high_chol, "CholCheck": chol_check, "BMI": bmi, "Smoker": smoker,
-    "Stroke": stroke, "HeartDiseaseorAttack": heart_disease, "PhysActivity": phys_activity,
-    "Fruits": fruits, "Veggies": veggies, "HvyAlcoholConsump": hvy_alcohol,
-    "NoDocbcCost": no_doc_cost, "GenHlth": gen_hlth,
-    "MentHlth": ment_hlth, "PhysHlth": phys_hlth, "DiffWalk": diff_walk, "Sex": sex,
-    "Age": age
-})
 
 # Convert inputs to numpy array and make a prediction
 if st.button("Run Model"):
