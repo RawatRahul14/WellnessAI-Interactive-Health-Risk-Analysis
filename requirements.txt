@@ -6,10 +6,6 @@ tensorflow
 seaborn
 ensure
 imbalanced-learn
-sys
-urllib
 os
-zipfile
-logging
 streamlit
 -e .
