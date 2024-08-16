@@ -44,9 +44,9 @@ The objective of this project is to develop and evaluate machine learning models
 
 - General Health (gen_hlth): A self-assessment of general health, rated on a scale from 1 to 5.
 
-- Mental Health (ment_hlth): A self-assessment of mental health, rated on a scale from 3 to 30.
+- Mental Health (ment_hlth): The number of mentally unhealthy days experienced in a month.
 
-- Physical Health (phys_hlth): A self-assessment of physical health, rated on a scale from 3 to 30.
+- Physical Health (phys_hlth): The number of physically unhealthy days experienced in a month.
 
 - Difficulty Walking (diff_walk): Indicates whether the individual has difficulty walking.
 

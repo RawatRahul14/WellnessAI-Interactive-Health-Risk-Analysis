@@ -117,12 +117,9 @@ fruits = st.selectbox("Enter your frequency of fruit consumption (0 = Never, 1 =
 veggies = st.selectbox("Enter your frequency of vegetable consumption (0 = Never, 1 = Daily)", [0, 1])
 hvy_alcohol = st.selectbox("Enter your level of heavy alcohol consumption (0 = None, 1 = Very High)", [0, 1])
 no_doc_cost = st.selectbox("Enter how often you avoid seeing a doctor due to cost (0 = Never, 1 = Always)", [0, 1])
-gen_hlth = st.slider("How would you rate your general health? (1 = Poor, 10 = Excellent)", min_value=1, max_value=10, value=5)
-gen_hlth = gen_hlth // 2
-ment_hlth = st.slider("How would you rate your mental health? (1 = Poor, 10 = Excellent)", min_value=1, max_value=10, value=5)
-ment_hlth = ment_hlth * 3
-phys_hlth = st.slider("How would you rate your physical health? (1 = Poor, 10 = Excellent)", min_value=1, max_value=10, value=5)
-phys_hlth = phys_hlth * 3
+gen_hlth = st.slider("How would you rate your general health? (1 = Poor, 5 = Excellent)", min_value=1, max_value=5, value=2)
+ment_hlth = st.slider("How many number of mentally unhealthy days you experience in a month?", min_value=1, max_value=30, value=5)
+phys_hlth = st.slider("How many number of physically unhealthy days you experience in a month?", min_value=1, max_value=30, value=5)
 diff_walk = st.selectbox("Enter your difficulty walking (0 = None, 1 = Severe)", [0, 1])
 sex = st.selectbox("Select your gender", ["Female", "Male"])
 if sex == "Female":
