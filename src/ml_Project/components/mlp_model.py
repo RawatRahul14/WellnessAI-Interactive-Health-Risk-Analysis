@@ -5,6 +5,8 @@ from tensorflow.keras.layers import Input, Dense, Concatenate
 from tensorflow.keras.utils import to_categorical
 from ml_Project import logger
 from ml_Project.utils.common import create_directories
+import json
+import os
 
 class ModelTrainer:
     def __init__(self, train_data_path, test_data_path, target_col, dir_path):
@@ -84,7 +86,7 @@ class ModelTrainer:
 
         # Build and train model
         model = self.build_custom_model((X_train.shape[1], ))
-        model.fit(X_train, y_train, epochs = 30, batch_size = 128, validation_data = (X_test, y_test))
+        history = model.fit(X_train, y_train, epochs = 25, batch_size = 128, validation_data = (X_test, y_test))
 
         # Evaluate model
         loss, accuracy = model.evaluate(X_test, y_test)
@@ -93,3 +95,11 @@ class ModelTrainer:
         # Save model weights
         model.save_weights("Model_weights/Model_selection/model_mlp.h5")
         logger.info("Model saved.")
+
+        # Save history
+        history_dict = history.history
+        history_path = os.path.join(self.history_filepath, "training_history_model.json")
+        with open(history_path, 'w') as f:
+            json.dump(history_dict, f)
+
+        print(f"Training history saved to {history_path}")
