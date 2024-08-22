@@ -7,6 +7,7 @@ train_data_path = "Dataset/Data_transformation/train.csv"
 test_data_path = "Dataset/Data_transformation/test.csv"
 target_col = "Diabetes_012"
 dir_path = "Model_weights/Model_selection"
+history_filepath = "History"
 
 class MLPModelPipeline:
     def __init__(self):

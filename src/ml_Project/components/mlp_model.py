@@ -9,11 +9,17 @@ import json
 import os
 
 class ModelTrainer:
-    def __init__(self, train_data_path, test_data_path, target_col, dir_path):
+    def __init__(self, 
+                 train_data_path, 
+                 test_data_path, 
+                 target_col, 
+                 dir_path,
+                 history_filepath):
         self.train_data_path = train_data_path
         self.test_data_path = test_data_path
         self.target_col = target_col
         self.dir_path = dir_path
+        self.history_filepath = history_filepath
 
     def create_dir(self):
         create_directories([self.dir_path])
