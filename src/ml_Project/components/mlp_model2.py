@@ -41,30 +41,29 @@ class ModelTrainer:
         inputs = Input(shape=input_shape)
 
         # Layer 1
-        x1 = Dense(1024, activation = "relu")(inputs)
+        x1 = Dense(256, activation = "relu")(inputs)
         x1 = BatchNormalization()(x1)
         x1 = Dropout(0.4)(x1)
 
         # Layer 2
-        x2 = Dense(1024, activation='relu')(x1)
+        x2 = Dense(256, activation='relu')(x1)
         x2 = BatchNormalization()(x2)
         x2 = Dropout(0.5)(x2)
         x2 = add([x2, x1])  # Skip connection
 
         # Hidden Layer 3
-        x3 = Dense(2048, activation='relu')(x2)
+        x3 = Dense(256, activation='relu')(x2)
         x3 = BatchNormalization()(x3)
         x3 = Dropout(0.5)(x3)
         
         # Hidden Layer 4 with Skip Connection
-        x4 = Dense(1024, activation='relu')(x3)
+        x4 = Dense(256, activation='relu')(x3)
         x4 = BatchNormalization()(x4)
         x4 = Dropout(0.5)(x4)
         x4 = add([x4, x2])  # Skip connection
         
         # Fully connected layers
         x = Dense(256, activation = "relu")(x4)
-        x = Dense(256, activation = "relu")(x)
         outputs = Dense(3, activation = "softmax")(x)
 
         # Build model

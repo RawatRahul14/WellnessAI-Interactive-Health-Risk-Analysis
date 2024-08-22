@@ -18,7 +18,8 @@ class MLPModelPipeline:
             mlp_trainer = ModelTrainer(train_data_path,
                                        test_data_path,
                                        target_col,
-                                       dir_path)
+                                       dir_path,
+                                       history_filepath)
             
             mlp_trainer.train()
         except Exception as e:

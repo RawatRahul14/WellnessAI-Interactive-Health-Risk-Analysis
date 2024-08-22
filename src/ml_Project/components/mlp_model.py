@@ -23,6 +23,7 @@ class ModelTrainer:
 
     def create_dir(self):
         create_directories([self.dir_path])
+        create_directories([self.history_filepath])
 
     def load_data(self):
         train_data = pd.read_csv(self.train_data_path)
