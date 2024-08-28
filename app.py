@@ -1,88 +1,82 @@
+import joblib
+from sklearn.ensemble import RandomForestClassifier
+import numpy as np
+import streamlit as st
+import tensorflow as tf
 from tensorflow.keras.layers import Input, Dense, Concatenate, BatchNormalization, Dropout
 from tensorflow.keras.models import Model
-import tensorflow as tf
 
+# Define the Keras models as you already have
 def MLP_model(input_shape):
-    inputs = Input(shape = input_shape, name = "input")
-
+    inputs = Input(shape=input_shape, name="input")
     # Branch 1
-    x1 = Dense(128, activation = "relu", name = "dense_1_branch1")(inputs)
-    x1 = Dense(128, activation = "relu", name = "dense_2_branch1")(x1)
-    x1 = Dense(64, activation = "relu", name = "dense_3_branch1")(x1)
+    x1 = Dense(128, activation="relu", name="dense_1_branch1")(inputs)
+    x1 = Dense(128, activation="relu", name="dense_2_branch1")(x1)
+    x1 = Dense(64, activation="relu", name="dense_3_branch1")(x1)
 
     # Branch 2
-    x2 = Dense(128, activation = "relu", name = "dense_1_branch2")(inputs)
-    x2 = Dense(128, activation = "relu", name = "dense_2_branch2")(x2)
-    x2 = Dense(64, activation = "relu", name = "dense_3_branch2")(x2)
+    x2 = Dense(128, activation="relu", name="dense_1_branch2")(inputs)
+    x2 = Dense(128, activation="relu", name="dense_2_branch2")(x2)
+    x2 = Dense(64, activation="relu", name="dense_3_branch2")(x2)
 
     # Branch 3
-    x3 = Dense(128, activation = "relu", name = "dense_1_branch3")(inputs)
-    x3 = Dense(128, activation = "relu", name = "dense_2_branch3")(x3)
-    x3 = Dense(64, activation = "relu", name = "dense_3_branch3")(x3)
+    x3 = Dense(128, activation="relu", name="dense_1_branch3")(inputs)
+    x3 = Dense(128, activation="relu", name="dense_2_branch3")(x3)
+    x3 = Dense(64, activation="relu", name="dense_3_branch3")(x3)
 
     # Branch 4
-    x4 = Dense(128, activation = "relu", name = "dense_1_branch4")(inputs)
-    x4 = Dense(128, activation = "relu", name = "dense_2_branch4")(x4)
-    x4 = Dense(64, activation = "relu", name = "dense_3_branch4")(x4)
+    x4 = Dense(128, activation="relu", name="dense_1_branch4")(inputs)
+    x4 = Dense(128, activation="relu", name="dense_2_branch4")(x4)
+    x4 = Dense(64, activation="relu", name="dense_3_branch4")(x4)
 
     # Combine branches
-    combined = Concatenate(name = "concat")([x1, x2, x3, x4])
+    combined = Concatenate(name="concat")([x1, x2, x3, x4])
 
     # Fully connected layers
-    x = Dense(256, activation = "relu", name = "dense_1")(combined)
-    x = Dense(256, activation = "relu", name = "dense_2")(x)
-    outputs = Dense(3, activation = "softmax", name = "output")(x)
+    x = Dense(256, activation="relu", name="dense_1")(combined)
+    x = Dense(256, activation="relu", name="dense_2")(x)
+    outputs = Dense(3, activation="softmax", name="output")(x)
 
     model = Model(inputs=inputs, outputs=outputs)
     model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
-
     return model
 
 def MLP_2_Model(input_shape):
-    # Input layer
     inputs = Input(shape=input_shape)
-
-    # Layer 1
-    x = Dense(128, activation = "relu", name = "layer_1")(inputs)
+    x = Dense(128, activation="relu", name="layer_1")(inputs)
     x = BatchNormalization()(x)
     x = Dropout(0.4)(x)
-
-    # Layer 2
-    x = Dense(256, activation = "relu", name = "layer_2")(x)
+    x = Dense(256, activation="relu", name="layer_2")(x)
     x = BatchNormalization()(x)
     x = Dropout(0.4)(x)
-
-    # Layer 3
-    x = Dense(256, activation = "relu", name = "layer_3")(x)
+    x = Dense(256, activation="relu", name="layer_3")(x)
     x = BatchNormalization()(x)
     x = Dropout(0.4)(x)
-    
-    # Output layer
-    outputs = Dense(3, activation = "softmax", name = "output_layer")(x)
+    outputs = Dense(3, activation="softmax", name="output_layer")(x)
 
-    # Build model
     model = Model(inputs=inputs, outputs=outputs)
-    model.compile(optimizer = "adam", loss = "categorical_crossentropy", metrics = ["accuracy"])
-
+    model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
     return model
 
-import streamlit as st
-import numpy as np
-import tensorflow as tf
-
-# Define the model architecture
-input_shape = (18,)  # Adjust input shape as per your model
+# Load the pre-trained Keras model weights
+input_shape = (18,)
 mlp_model = MLP_model(input_shape)
-
 mlp_2_model = MLP_2_Model(input_shape)
 
-# Load pre-trained model weights
 try:
     mlp_model.load_weights("Model_weights\Model_selection\model_mlp.h5")
     mlp_2_model.load_weights("Model_weights\Model_selection\model_2_mlp.h5")
-    st.success("Model weights loaded successfully.")
+    st.success("Keras model weights loaded successfully.")
 except Exception as e:
-    st.error(f"Error loading model weights: {e}")
+    st.error(f"Error loading Keras model weights: {e}")
+    st.stop()
+
+# Load the pre-trained Random Forest model
+try:
+    rf_model = joblib.load("Model_weights\Model_selection\model_rf.pkl")
+    st.success("Random Forest model loaded successfully.")
+except Exception as e:
+    st.error(f"Error loading Random Forest model: {e}")
     st.stop()
 
 # Set the title of the app
@@ -90,8 +84,6 @@ st.title("Diabetes Prediction UI")
 
 # User Inputs
 st.header("Enter Your Health Information")
-
-# Input fields corresponding to the dataset columns
 high_bp = st.number_input("Enter your level of high blood pressure (0 = None, 1 = Very High)", min_value=0.0, max_value=1.0, value=0.5)
 high_chol = st.number_input("Enter your level of high cholesterol (0 = None, 1 = Very High)", min_value=0.0, max_value=1.0, value=0.5)
 chol_check = st.selectbox("Have you undergone a cholesterol check? (0 = No, 1 = Yes)", [0, 1])
@@ -118,8 +110,8 @@ else:
 age = st.slider("Please specify your age", min_value=1, max_value=100, value=18)
 
 # Model Selection
-st.header("Select a Deep Learning Model")
-model_choice = st.radio("Choose a model", ("DNN Model", "MLP Model"))
+st.header("Select a Model")
+model_choice = st.radio("Choose a model", ("DNN Model", "MLP Model", "Random Forest Model"))
 
 # Convert inputs to numpy array and make a prediction
 if st.button("Run Model"):
@@ -127,19 +119,21 @@ if st.button("Run Model"):
     input_data = np.array([[high_bp, high_chol, chol_check, bmi, smoker, stroke, heart_disease, phys_activity,
                             fruits, veggies, hvy_alcohol, no_doc_cost, gen_hlth, ment_hlth,
                             phys_hlth, diff_walk, sex, age//5]])
-    
+
     try:
-        # Make a prediction using the model
+        # Make a prediction using the selected model
         if model_choice == "DNN Model":
             prediction = mlp_model.predict(input_data)
         elif model_choice == "MLP Model":
             prediction = mlp_2_model.predict(input_data)
-        
+        elif model_choice == "Random Forest Model":
+            prediction = rf_model.predict_proba(input_data)
+
         # Get the predicted class and label it as "No Diabetes", "Prediabetes", or "Diabetes"
         predicted_class = np.argmax(prediction, axis=1)[0]
         labels = ["No Diabetes", "Prediabetes", "Diabetes"]  # Adjust as per your classes
         prediction_label = labels[predicted_class]
-        
+
         # Display the result
         st.write(f"The model predicts: {prediction_label}")
     except Exception as e:
