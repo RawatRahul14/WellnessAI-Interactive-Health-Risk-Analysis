@@ -1,74 +1,68 @@
-from tensorflow.keras.layers import Input, Dense, Concatenate, Conv2D, Flatten, LSTM
+from tensorflow.keras.layers import Input, Dense, Concatenate, BatchNormalization, Dropout
 from tensorflow.keras.models import Model
 import tensorflow as tf
 
 def MLP_model(input_shape):
-    inputs = Input(shape=input_shape, name="input")
+    inputs = Input(shape = input_shape, name = "input")
 
     # Branch 1
-    x1 = Dense(128, activation="relu", name="dense_1_branch1")(inputs)
-    x1 = Dense(128, activation="relu", name="dense_2_branch1")(x1)
-    x1 = Dense(64, activation="relu", name="dense_3_branch1")(x1)
+    x1 = Dense(128, activation = "relu", name = "dense_1_branch1")(inputs)
+    x1 = Dense(128, activation = "relu", name = "dense_2_branch1")(x1)
+    x1 = Dense(64, activation = "relu", name = "dense_3_branch1")(x1)
 
     # Branch 2
-    x2 = Dense(128, activation="relu", name="dense_1_branch2")(inputs)
-    x2 = Dense(128, activation="relu", name="dense_2_branch2")(x2)
-    x2 = Dense(64, activation="relu", name="dense_3_branch2")(x2)
+    x2 = Dense(128, activation = "relu", name = "dense_1_branch2")(inputs)
+    x2 = Dense(128, activation = "relu", name = "dense_2_branch2")(x2)
+    x2 = Dense(64, activation = "relu", name = "dense_3_branch2")(x2)
 
     # Branch 3
-    x3 = Dense(128, activation="relu", name="dense_1_branch3")(inputs)
-    x3 = Dense(128, activation="relu", name="dense_2_branch3")(x3)
-    x3 = Dense(64, activation="relu", name="dense_3_branch3")(x3)
+    x3 = Dense(128, activation = "relu", name = "dense_1_branch3")(inputs)
+    x3 = Dense(128, activation = "relu", name = "dense_2_branch3")(x3)
+    x3 = Dense(64, activation = "relu", name = "dense_3_branch3")(x3)
 
     # Branch 4
-    x4 = Dense(128, activation="relu", name="dense_1_branch4")(inputs)
-    x4 = Dense(128, activation="relu", name="dense_2_branch4")(x4)
-    x4 = Dense(64, activation="relu", name="dense_3_branch4")(x4)
+    x4 = Dense(128, activation = "relu", name = "dense_1_branch4")(inputs)
+    x4 = Dense(128, activation = "relu", name = "dense_2_branch4")(x4)
+    x4 = Dense(64, activation = "relu", name = "dense_3_branch4")(x4)
 
     # Combine branches
-    combined = Concatenate(name="concat")([x1, x2, x3, x4])
+    combined = Concatenate(name = "concat")([x1, x2, x3, x4])
 
     # Fully connected layers
-    x = Dense(256, activation="relu", name="dense_1")(combined)
-    x = Dense(256, activation="relu", name="dense_2")(x)
-    outputs = Dense(3, activation="softmax", name="output")(x)
+    x = Dense(256, activation = "relu", name = "dense_1")(combined)
+    x = Dense(256, activation = "relu", name = "dense_2")(x)
+    outputs = Dense(3, activation = "softmax", name = "output")(x)
 
     model = Model(inputs=inputs, outputs=outputs)
     model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
 
     return model
 
-def CNN_model(input_shape):
-    inputs = Input(shape=input_shape, name="input")
-
-    x = Conv2D(32, (1, 1), activation="relu", padding="same", name="conv1")(inputs)
-    x = Conv2D(64, (1, 1), activation="relu", padding="same", name="conv2")(x)
-    x = Conv2D(128, (1, 1), activation="relu", padding="same", name="conv3")(x)
-
-    x = Flatten(name="flatten")(x)
-    x = Dense(128, activation="relu", name="dense_1")(x)
-    outputs = Dense(3, activation="softmax", name="output")(x)
-
-    model = Model(inputs=inputs, outputs=outputs)
-    model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
-
-    return model
-
-def RNN_model(input_shape):
+def MLP_2_Model(input_shape):
     # Input layer
-    inputs = Input(shape=input_shape, name = "input")
+    inputs = Input(shape=input_shape)
 
-    # RNN Layer
-    x = LSTM(128, return_sequences=True, name = "lstm_1")(inputs)
-    x = LSTM(64, name = "lstm_2")(x)
+    # Layer 1
+    x = Dense(128, activation = "relu", name = "layer_1")(inputs)
+    x = BatchNormalization()(x)
+    x = Dropout(0.4)(x)
 
-    # Fully connected layers
-    x = Dense(128, activation="relu", name = "dense_1")(x)
-    outputs = Dense(3, activation="softmax", name = "output")(x)
+    # Layer 2
+    x = Dense(256, activation = "relu", name = "layer_2")(x)
+    x = BatchNormalization()(x)
+    x = Dropout(0.4)(x)
+
+    # Layer 3
+    x = Dense(256, activation = "relu", name = "layer_3")(x)
+    x = BatchNormalization()(x)
+    x = Dropout(0.4)(x)
+    
+    # Output layer
+    outputs = Dense(3, activation = "softmax", name = "output_layer")(x)
 
     # Build model
     model = Model(inputs=inputs, outputs=outputs)
-    model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
+    model.compile(optimizer = "adam", loss = "categorical_crossentropy", metrics = ["accuracy"])
 
     return model
 
@@ -80,17 +74,12 @@ import tensorflow as tf
 input_shape = (18,)  # Adjust input shape as per your model
 mlp_model = MLP_model(input_shape)
 
-input_shape_cnn = (18, 1, 1)
-cnn_model = CNN_model(input_shape_cnn)
-
-input_shape_rnn = (18, 1)
-rnn_model = RNN_model(input_shape_rnn)
+mlp_2_model = MLP_2_Model(input_shape)
 
 # Load pre-trained model weights
 try:
     mlp_model.load_weights("Model_weights\Model_selection\model_mlp.h5")
-    cnn_model.load_weights("Model_weights\Model_selection\model_cnn.h5")
-    rnn_model.load_weights("Model_weights\Model_selection\model_rnn.h5")
+    mlp_2_model.load_weights("Model_weights\Model_selection\model_2_mlp.h5")
     st.success("Model weights loaded successfully.")
 except Exception as e:
     st.error(f"Error loading model weights: {e}")
@@ -130,7 +119,7 @@ age = st.slider("Please specify your age", min_value=1, max_value=100, value=18)
 
 # Model Selection
 st.header("Select a Deep Learning Model")
-model_choice = st.radio("Choose a model", ("MLP", "CNN", "RNN"))
+model_choice = st.radio("Choose a model", ("DNN Model", "MLP Model"))
 
 # Convert inputs to numpy array and make a prediction
 if st.button("Run Model"):
@@ -141,14 +130,12 @@ if st.button("Run Model"):
     
     try:
         # Make a prediction using the model
-        if model_choice == "MLP":
+        if model_choice == "DNN Model":
             prediction = mlp_model.predict(input_data)
-        elif model_choice == "CNN":
-            input_data = input_data.reshape(-1, input_data.shape[1], 1, 1)
-            prediction = cnn_model.predict(input_data)
-        elif model_choice == "RNN":
-            input_data = input_data.reshape(-1, input_data.shape[1], 1)
-            prediction = rnn_model.predict(input_data)
+        elif model_choice == "MLP Model":
+            prediction = mlp_2_model.predict(input_data)
+        
+        # Get the predicted class and label it as "No Diabetes", "Prediabetes", or "Diabetes"
         predicted_class = np.argmax(prediction, axis=1)[0]
         labels = ["No Diabetes", "Prediabetes", "Diabetes"]  # Adjust as per your classes
         prediction_label = labels[predicted_class]
