@@ -44,14 +44,14 @@ def MLP_model(input_shape):
 def MLP_2_Model(input_shape):
     inputs = Input(shape=input_shape)
     x = Dense(128, activation="relu", name="layer_1")(inputs)
-    x = BatchNormalization()(x)
-    x = Dropout(0.4)(x)
+    x = BatchNormalization(name = "layer_1_batchnorm1")(x)
+    x = Dropout(0.4, name = "layer_1_drop1")(x)
     x = Dense(256, activation="relu", name="layer_2")(x)
-    x = BatchNormalization()(x)
-    x = Dropout(0.4)(x)
+    x = BatchNormalization(name = "layer_2_batchnorm1")(x)
+    x = Dropout(0.4, name = "layer_2_drop1")(x)
     x = Dense(256, activation="relu", name="layer_3")(x)
-    x = BatchNormalization()(x)
-    x = Dropout(0.4)(x)
+    x = BatchNormalization(name = "layer_3_batchnorm1")(x)
+    x = Dropout(0.4, name = "layer_3_drop1")(x)
     outputs = Dense(3, activation="softmax", name="output_layer")(x)
 
     model = Model(inputs=inputs, outputs=outputs)
@@ -99,15 +99,57 @@ veggies = st.selectbox("Enter your frequency of vegetable consumption (0 = Never
 hvy_alcohol = st.selectbox("Enter your level of heavy alcohol consumption (0 = None, 1 = Very High)", [0, 1])
 no_doc_cost = st.selectbox("Enter how often you avoid seeing a doctor due to cost (0 = Never, 1 = Always)", [0, 1])
 gen_hlth = st.slider("How would you rate your general health? (1 = Poor, 5 = Excellent)", min_value=1, max_value=5, value=2)
-ment_hlth = st.slider("How many number of mentally unhealthy days you experience in a month?", min_value=1, max_value=30, value=5)
-phys_hlth = st.slider("How many number of physically unhealthy days you experience in a month?", min_value=1, max_value=30, value=5)
+def gen_hlth_exp(gen_hlth):
+    if gen_hlth == 1:
+        return 5
+    elif gen_hlth == 2:
+        return 4
+    elif gen_hlth == 3:
+        return 3
+    elif gen_hlth == 4:
+        return 2
+    elif gen_hlth == 5:
+        return 1
+gen_hlth = gen_hlth_exp(gen_hlth)
+ment_hlth = st.slider("How many number of mentally unhealthy days you experience in a month?", min_value=0, max_value=30, value=5)
+phys_hlth = st.slider("How many number of physically unhealthy days you experience in a month?", min_value=0, max_value=30, value=5)
 diff_walk = st.selectbox("Enter your difficulty walking (0 = None, 1 = Severe)", [0, 1])
 sex = st.selectbox("Select your gender", ["Female", "Male"])
 if sex == "Female":
     sex = 0
 else:
     sex = 1
-age = st.slider("Please specify your age", min_value=1, max_value=100, value=18)
+persone_age = st.slider("Please specify your age", min_value=1, max_value=100, value=18)
+
+def get_age_category(age):
+    if 18 <= age <= 24:
+        return 1
+    elif 25 <= age <= 29:
+        return 2
+    elif 30 <= age <= 34:
+        return 3
+    elif 35 <= age <= 39:
+        return 4
+    elif 40 <= age <= 44:
+        return 5
+    elif 45 <= age <= 49:
+        return 6
+    elif 50 <= age <= 54:
+        return 7
+    elif 55 <= age <= 59:
+        return 8
+    elif 60 <= age <= 64:
+        return 9
+    elif 65 <= age <= 69:
+        return 10
+    elif 70 <= age <= 74:
+        return 11
+    elif 75 <= age <= 79:
+        return 12
+    elif age >= 80:
+        return 13
+
+age = get_age_category(persone_age)
 
 # Model Selection
 st.header("Select a Model")
@@ -118,7 +160,7 @@ if st.button("Run Model"):
     # Prepare the input data for prediction
     input_data = np.array([[high_bp, high_chol, chol_check, bmi, smoker, stroke, heart_disease, phys_activity,
                             fruits, veggies, hvy_alcohol, no_doc_cost, gen_hlth, ment_hlth,
-                            phys_hlth, diff_walk, sex, age//5]])
+                            phys_hlth, diff_walk, sex, age]])
 
     try:
         # Make a prediction using the selected model
