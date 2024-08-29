@@ -35,8 +35,8 @@ class DataTransformation:
         X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
         logger.info("Resampled the data to balance the Labels.")
 
-        cols = ['Sex', 'DiffWalk', 'Veggies', 
-                'Fruits', 'HeartDiseaseorAttack', 'Stroke']
+        cols = ["HighBP", "HighChol", "Sex", "DiffWalk", "Veggies", 
+                "Fruits", "HeartDiseaseorAttack", "Stroke"]
         for col in cols:
             X_resampled[col] = (X_resampled[col] >= 0.5).astype(float)
 

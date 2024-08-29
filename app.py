@@ -84,8 +84,8 @@ st.title("Diabetes Prediction UI")
 
 # User Inputs
 st.header("Enter Your Health Information")
-high_bp = st.number_input("Enter your level of high blood pressure (0 = None, 1 = Very High)", min_value=0.0, max_value=1.0, value=0.5)
-high_chol = st.number_input("Enter your level of high cholesterol (0 = None, 1 = Very High)", min_value=0.0, max_value=1.0, value=0.5)
+high_bp = st.selectbox("Enter your level of high blood pressure (0 = None, 1 = Very High)", [0, 1])
+high_chol = st.selectbox("Enter your level of high cholesterol (0 = None, 1 = Very High)", [0, 1])
 chol_check = st.selectbox("Have you undergone a cholesterol check? (0 = No, 1 = Yes)", [0, 1])
 height = st.number_input("Enter your height (in cm)", min_value=10.0, max_value=200.0, value=100.0)
 weight = st.number_input("Enter your weight (in kg)", min_value=0.0, max_value=120.0, value=30.0)
